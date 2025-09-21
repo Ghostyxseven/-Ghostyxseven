@@ -9,7 +9,7 @@ import { io } from 'socket.io-client';
 
 // --- Constantes e Configuração Inicial ---
 // Define o endereço base da sua API para ser reutilizado.
-const API_URL = "https://api.usermicael.online";
+const API_URL = "http://localhost:3000";
 // Inicia a conexão com o servidor de multiplayer.
 const socket = io(API_URL);
 

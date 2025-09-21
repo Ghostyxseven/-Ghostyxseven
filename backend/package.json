@@ -1,0 +1,27 @@
+{
+  "name": "quiz",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.1.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "mariadb": "^3.4.5",
+    "node-fetch": "^2.7.0",
+    "nodemailer": "^7.0.6",
+    "pg": "^8.16.3",
+    "socket.io": "^4.8.1"
+  }
+}
