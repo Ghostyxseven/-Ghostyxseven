@@ -1,0 +1,326 @@
+/* ==============================
+    🎨 Variáveis Globais e Temas
+============================== */
+:root {
+  --primary-bg-color: #0d1b2a;
+  --secondary-bg-color: rgba(22, 40, 68, 0.7);
+  --text-color: #e0e1dd;
+  --accent-color: #7b9cff;
+  --text-dark: #0a0b0be2;
+  --correct-color: #4CAF50;
+  --incorrect-color: #F44336;
+  --font-family-primary: 'Montserrat', 'Segoe UI', sans-serif;
+  --font-family-secondary: 'Open Sans', sans-serif;
+  --border-radius-card: 40px;
+  --border-radius-button: 18px;
+  --transition-speed: 0.3s;
+}
+
+body.theme-royal-library {
+  --primary-bg-color: #2c2a2a;
+  --secondary-bg-color: rgba(60, 48, 40, 0.7);
+  --text-color: #EAE0D5;
+  --accent-color: #C69F6C;
+  --correct-color: #5A9A78;
+  --incorrect-color: #B95C50;
+  background-image: radial-gradient(circle at top, #4A4441, #2c2a2a);
+}
+
+/* ==============================
+    🔧 Reset e Animações
+============================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Classe de acessibilidade para esconder labels visualmente */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutToLeft {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0; }
+}
+@keyframes slideInFromLeft {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutToRight {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+.auth-card.shake { animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes pulse { 50% { transform: scale(1.1); } }
+
+/* Animação para o botão de revanche */
+@keyframes glowing {
+    0% { box-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color); }
+    50% { box-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-color); }
+    100% { box-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color); }
+}
+.glowing {
+    animation: glowing 1.5s infinite;
+}
+
+
+/* ==============================
+    🖥️ Estrutura e Layout
+============================== */
+body {
+  font-family: var(--font-family-secondary);
+  background-color: var(--primary-bg-color);
+  background-image: radial-gradient(circle at top, #1b263b, #0d1b2a);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 1em;
+  transition: all var(--transition-speed);
+}
+
+main { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.auth-container { max-width: 480px; width: 100%; }
+
+.auth-card {
+  position: relative; 
+  overflow: hidden; 
+  background: var(--secondary-bg-color);
+  backdrop-filter: blur(8px);
+  border-radius: var(--border-radius-card);
+  padding: clamp(1.5em, 5vw, 2.5em);
+  box-shadow: 0 12px 50px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 500px; /* Altura mínima para evitar que o card encolha durante a transição */
+  display: flex;
+  align-items: center;
+}
+
+.screen {
+  width: 100%;
+  display: none; /* Escondido por padrão */
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2em;
+}
+.screen.active {
+  display: flex; /* Apenas a tela ativa é exibida */
+  animation: slideInFromRight 0.5s forwards;
+}
+
+/* Classes de controle de animação que serão adicionadas via JS */
+.screen.slide-out-to-left { display: flex; animation: slideOutToLeft 0.5s forwards; }
+.screen.slide-in-from-right { display: flex; animation: slideInFromRight 0.5s forwards; }
+.screen.slide-out-to-right { display: flex; animation: slideOutToRight 0.5s forwards; }
+.screen.slide-in-from-left { display: flex; animation: slideInFromLeft 0.5s forwards; }
+
+.quiz-title {
+  font-family: var(--font-family-primary);
+  font-size: clamp(1.8rem, 6vw, 2.2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.5em;
+  color: #fff;
+}
+.quiz-title span { background: rgba(255, 255, 255, 0.1); padding: 0.2em 0.4em; border-radius: 10px; }
+
+/* ==============================
+    🧩 Componentes (Botões, Inputs, etc.)
+============================== */
+.input-group { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 1em; margin: 0 auto; }
+.input-group-multiplayer { display: flex; gap: 10px; width: 100%; max-width: 380px; }
+
+.auth-input {
+  padding: 0.8em 1.2em; font-size: 1rem; border-radius: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.4); width: 100%;
+  background: transparent; color: var(--text-color); text-align: center;
+  transition: all var(--transition-speed) ease;
+}
+.auth-input:focus-visible {
+  outline: none; border-color: var(--accent-color); background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(123, 156, 255, 0.2);
+}
+.auth-btn, .quiz-btn {
+  padding: 0.9em; font-size: 1rem; font-weight: 700; border: none;
+  border-radius: var(--border-radius-button);
+  background: linear-gradient(95deg, #3e537e 0%, #2a3a5b 100%);
+  color: var(--text-color); cursor: pointer; width: 100%; max-width: 380px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); transition: all var(--transition-speed) ease;
+}
+.auth-btn:hover:not(:disabled), .quiz-btn:hover:not(:disabled) {
+  transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+.auth-btn:disabled, .quiz-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.secondary-btn { background: transparent; border: 2px solid #6c757d; }
+.option-btn {
+  padding: 0.9em 1.2em; font-size: 1rem; border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--border-radius-button); background: rgba(255,255,255,0.05);
+  color: var(--text-color); cursor: pointer; text-align: left;
+  transition: all var(--transition-speed);
+}
+.option-btn:hover:not([disabled]) { background: rgba(255,255,255,0.1); transform: translateX(5px); }
+.option-btn.correct { background: var(--correct-color); color: #fff; border-color: var(--correct-color); }
+.option-btn.incorrect { background: var(--incorrect-color); color: #fff; border-color: var(--incorrect-color); }
+.options-container { width: 100%; display: flex; flex-direction: column; gap: 0.8em; }
+
+.forgot-password-link {
+  color: var(--text-color); text-decoration: none; font-size: 0.9rem;
+  opacity: 0.8; transition: opacity 0.3s; margin: -10px 0 10px 0;
+}
+.forgot-password-link:hover { opacity: 1; text-decoration: underline; }
+
+/* ==============================
+    📊 Ranking, Perfil e Avatares
+============================== */
+.ranking-filters, .difficulty-selector {
+  display: flex; gap: 0.5em; margin-bottom: 1em; background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.5em; border-radius: 50px; width: 100%; max-width: 380px;
+}
+.filter-btn, .difficulty-btn {
+  flex: 1; padding: 0.5em 1em; font-size: 0.85rem; border-radius: 50px; border: none;
+  background-color: transparent; color: var(--text-color); cursor: pointer;
+  transition: all 0.2s; font-weight: 600;
+}
+.filter-btn.active, .difficulty-btn.active {
+  background-color: var(--accent-color); color: var(--text-dark); box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.ranking-box { width: 100%; max-width: 380px; }
+.ranking-box ol { list-style: none; padding: 0; margin: 0; }
+.ranking-box li {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 0.5em 0; padding: 0.8em; border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.15); text-align: left;
+}
+.profile-avatar { width: 80px; height: 80px; margin-bottom: 1em; }
+.player-avatar { width: 50px; height: 50px; }
+.profile-avatar, .player-avatar {
+  border-radius: 50%; background-color: rgba(0,0,0,0.3);
+  border: 3px solid var(--accent-color); display: flex;
+  justify-content: center; align-items: center;
+  overflow: hidden; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.avatar-image { width: 100%; height: 100%; object-fit: cover; }
+.avatar-letter { font-size: 2.5rem; font-weight: 700; color: var(--text-color); }
+.avatar-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 15px;
+    margin: 1.5em 0;
+    width: 100%;
+    max-width: 380px;
+}
+.avatar-option {
+  width: 60px; height: 60px; border-radius: 50%; cursor: pointer;
+  border: 3px solid transparent; transition: all 0.2s ease; object-fit: cover;
+  padding: 2px; background-color: rgba(0,0,0,0.2);
+}
+.avatar-option:hover { transform: scale(1.1); border-color: var(--accent-color); }
+.avatar-option.selected {
+  border-color: var(--correct-color); box-shadow: 0 0 10px var(--correct-color); transform: scale(1.15);
+}
+
+/* ==============================
+    ❓ Quiz e Perguntas
+============================== */
+.quiz-header { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 1em; margin-bottom: 1em; }
+.timer { width: 45px; height: 45px; border-radius: 50%; background-color: rgba(0, 0, 0, 0.3); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; flex-shrink: 0; border: 2px solid var(--accent-color); transition: all 0.3s; }
+.timer.danger { background-color: var(--incorrect-color); color: #fff; border-color: var(--incorrect-color); animation: pulse 1s infinite; }
+.progress-bar-container { width: 100%; height: 10px; background-color: rgba(0, 0, 0, 0.3); border-radius: 5px; overflow: hidden; }
+.progress-bar { width: 0%; height: 100%; background-color: var(--accent-color); border-radius: 5px; transition: width 0.4s ease-in-out; }
+.question { font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 600; }
+.loader { border: 5px solid rgba(255, 255, 255, 0.2); border-top: 5px solid var(--accent-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; }
+.explanation-box {
+    background-color: rgba(0,0,0,0.2);
+    padding: 1em;
+    border-radius: var(--border-radius-button);
+    margin-top: 1em;
+    font-size: 0.9rem;
+    border-left: 4px solid var(--accent-color);
+}
+
+/* ==============================
+    ⚔️ MODO DUELO
+============================== */
+.multiplayer-header {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; width: 100%; gap: 1em;
+  margin-bottom: 1em; padding-bottom: 1em; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.player-info { display: flex; align-items: center; gap: 10px; }
+#player2-info { flex-direction: row-reverse; text-align: right; }
+.player-info span { font-weight: 600; }
+.player-info .score { font-size: 1.2rem; font-weight: 800; color: var(--accent-color); }
+.option-btn.selected {
+  background: var(--accent-color); color: var(--text-dark);
+  border-color: var(--accent-color); transform: translateX(5px);
+}
+/* Estilos para ELO e Sala Privada */
+#elo-changes { margin: 1em 0; font-weight: 600; }
+.elo-gain { color: var(--correct-color); }
+.elo-loss { color: var(--incorrect-color); }
+.room-code-box {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 5px;
+    padding: 0.5em 1em;
+    border-radius: var(--border-radius-button);
+    background-color: rgba(0,0,0,0.3);
+    border: 2px dashed var(--accent-color);
+    color: #fff;
+    margin: 0.5em 0;
+}
+
+/* ==============================
+    🔘 Botão de Tema
+============================== */
+.theme-toggle-btn {
+  position: fixed; top: 20px; right: 20px;
+  background: var(--secondary-bg-color); color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%;
+  width: 45px; height: 45px; font-size: 1.5rem;
+  cursor: pointer; display: flex; justify-content: center; align-items: center;
+  z-index: 1000; transition: all var(--transition-speed);
+}
+.theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); }
+
+
+/* ==================================================
+    📱 RESPONSIVIDADE PARA CELULAR E TELAS PEQUENAS
+================================================== */
+@media (max-width: 600px) {
+  .auth-card { padding: 1.5em; --border-radius-card: 25px; min-height: 90vh; }
+  .quiz-title { font-size: 1.6rem; }
+  .quiz-desc, .quiz-desc2 { font-size: 0.9rem; }
+  .multiplayer-header { gap: 0.5em; }
+  .player-info { gap: 8px; }
+  .player-avatar { width: 40px; height: 40px; }
+  .avatar-letter { font-size: 1.3rem; }
+  .player-info span { font-size: 0.85rem; }
+  .player-info .score { font-size: 1.1rem; }
+  .timer { width: 40px; height: 40px; font-size: 1.1rem; }
+  .question { font-size: 1.05rem; }
+  .option-btn { font-size: 0.9rem; padding: 0.8em 1em; }
+  .input-group-multiplayer { flex-direction: column; }
+}
