@@ -20,13 +20,12 @@ const server = http.createServer(app);
 
 // --- MELHORIA: Configuração de CORS centralizada e flexível ---
 // Lista de endereços (origens) que têm permissão para se conectar à sua API
-const allowedOrigins = [
-   // Seu site em produção
+const allowedOrigins = [ // Seu site em produção
     "http://localhost:3000",     // Endereço comum de desenvolvimento
     "http://localhost:5173",     // Endereço padrão do Vite
     "http://localhost:5174",     // Portas alternativas do Vite
     "http://localhost:5175",
-    "http://192.168.1.55:5175"  // Seu IP de rede local para testes no telemóvel
+     // Seu IP de rede local para testes no telemóvel
 ];
 
 const corsOptions = {
@@ -57,12 +56,16 @@ app.use(helmet());
 app.use(cors(corsOptions)); // AJUSTE: Usa a configuração de CORS específica em vez da geral
 app.use(express.json());
 
+// --- SERVIR ARQUIVOS ESTÁTICOS DO PAINEL ADMIN ---
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/admin', express.static(path.join(__dirname, '..', 'admin')));
 
 
 // --- ROTAS DA API ---
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
-
+app.use('/api/admin', adminRoutes);
 
 // Rota raiz da API
 app.get("/", (req, res) => {
